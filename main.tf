@@ -38,9 +38,22 @@ resource "helm_release" "k3d-idp-demo-argocd-v2" {
     value = "NodePort"
   }
 
+# Hardcode the HTTP port mapped by your K3d cluster
+  set {
+    name  = "server.service.nodePort.http"
+    value = "8082"
+  }
+
   # Bypass internal SSL validation routines for development environments
   set {
     name  = "server.insecure"
     value = "true"
   }
+
+  set {
+    name  = "server.ingress.enabled"
+    value = "true"
+  }
+
+
 }
