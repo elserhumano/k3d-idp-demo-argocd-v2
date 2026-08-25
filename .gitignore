@@ -1,0 +1,19 @@
+# Directorios de Terraform locales
+.terraform/
+
+# Archivos de estado (contienen información sensible)
+*.tfstate
+*.tfstate.*
+
+# Archivos de variables locales (pueden contener contraseñas o tokens)
+*.tfvars
+!*.tfvars.example
+
+# Registros de errores del sistema
+crash.log
+crash.*.log
+
+# Archivos de configuración de CLI locales
+.terraformrc
+terraform.rc
+

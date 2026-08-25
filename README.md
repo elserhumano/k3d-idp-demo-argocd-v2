@@ -1,6 +1,6 @@
 # 🏗️ k3d-idp-demo-argocd-v2-infra
 
-This repository contains the automated **Infraestructure as Code (IaC)** blueprints provisioned by **Backstage IDP** to orchestrate core platform components inside your local **K3d cluster** using **Terraform and Helm**.
+This repository contains the automated **Infrastructure as Code (IaC)** blueprints provisioned by **Backstage IDP** to orchestrate core platform components inside your local **K3d cluster** using **Terraform and Helm** [INDEX].
 
 ---
 
@@ -11,6 +11,7 @@ This repository contains the automated **Infraestructure as Code (IaC)** bluepri
 - **Package Manager:** Helm Provider
 - **Target Cluster:** Local K3d Cluster (WSL2 Architecture)
 - **Platform Owner:** Platform Engineering Team
+- **GitHub Account:** @elserhumano
 
 ---
 
@@ -23,19 +24,9 @@ This repository contains the automated **Infraestructure as Code (IaC)** bluepri
 
 ---
 
-## ⚙️ Prerequisites & Workstation Setup
-
-Before executing this infrastructure automation suite, ensure your local workstation distribution has the following tools installed and active:
-
-1. **Terraform CLI** configured in your global path environment.
-2. An active **K3d Kubernetes Cluster** running with a local master node context.
-3. Your local cluster configuration file accessible at the default path `~/.kube/config`.
-
----
-
 ## 🚀 Infrastructure Execution Runbook
 
-Follow this exact sequential workflow in your terminal to initialize the providers and apply the resource configurations to your cluster:
+Follow this exact sequential workflow in your terminal to initialize the providers and apply the resource configurations to your cluster [INDEX]:
 
 ```bash
 # 1. Initialize the working directory and download required Helm providers
@@ -52,7 +43,7 @@ terraform apply -auto-approve
 
 ## 🔐 Post-Deployment Tasks: Accessing the Admin Console
 
-Once Terraform returns an `Apply complete!` status, your core platform components will be initializing inside the cluster database. 
+Once Terraform returns an `Apply complete!` status, your core platform components will be initializing inside the cluster database [INDEX].
 
 ### 1. Verify Deployment Pod Status
 Wait until all orchestrator pods reach a stable `Running` status using your cluster tool setup:
@@ -61,11 +52,19 @@ kubectl get pods -n k3d-idp-demo-argocd-v2
 ```
 
 ### 2. Extract the Default Admin Password
-The system automatically generates a secure cryptographic string for the primary administrator account (`admin`). Run this command to decode the secret string directly from your terminal:
+ArgoCD generates a secure cryptographic string for the primary administrator account (`admin`) [INDEX]. Run this command to decode the secret string directly from your terminal:
 ```bash
 kubectl -n k3d-idp-demo-argocd-v2 get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
-### 3. Open the Dashboard Interface
-Open your favorite web browser on **Windows 11 Pro** and navigate to your local host mapping target port:
-👉 **`http://localhost:8080`** *(Ensure your cluster Ingress or Service target mappings are active).*
+### 3. Open the Dashboard Interface (WSL2 Port-Forward Tunnel)
+Because this setup runs locally inside WSL2, execute a network port-forward tunnel in a secondary terminal tab to expose the service to your **Windows 11 Pro** host machine [INDEX]:
+```bash
+kubectl port-forward svc/k3d-idp-demo-argocd-v2-server -n k3d-idp-demo-argocd-v2 8081:80 --address 0.0.0.0
+```
+
+Now, open your favorite web browser and navigate to:
+👉 **`http://localhost:8081`**
+
+- **Username:** `admin` [INDEX]
+- **Password:** The decoded string from the previous step [INDEX].
