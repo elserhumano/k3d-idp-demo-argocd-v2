@@ -1,4 +1,4 @@
-# main.tf - Automated Infrastructure Blueprint for ArgoCD Deployment
+# main.tf - Enterprise Protected Infrastructure Blueprint
 terraform {
   required_version = ">= 1.5.0"
   required_providers {
@@ -6,6 +6,13 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.12.0"
     }
+  }
+
+  # SECURE REMOTE BACKEND: State will be preserved inside Kubernetes storage
+  backend "kubernetes" {
+    secret_suffix = "k3d-idp-demo-argocd-v2-state"
+    config_path   = "~/.kube/config"
+    namespace     = "kube-system"
   }
 }
 
