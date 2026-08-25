@@ -1,6 +1,9 @@
 # Directorios de Terraform locales
 .terraform/
 
+# Lock file containing provider hashes
+.terraform.lock.hcl
+
 # Archivos de estado (contienen información sensible)
 *.tfstate
 *.tfstate.*
